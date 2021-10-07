@@ -1,0 +1,28 @@
+{
+  "name": "wpforms-bigmailer-integration",
+  "version": "1.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eric-mathison/wpforms-bigmailer-integration.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eric-mathison/wpforms-bigmailer-integration/issues"
+  },
+  "homepage": "https://github.com/eric-mathison/wpforms-bigmailer-integration#readme",
+  "devDependencies": {
+    "grunt": "^1.4.1",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-compress": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-version": "^2.0.0",
+    "grunt-wp-i18n": "^1.0.3",
+    "load-grunt-tasks": "^5.1.0"
+  }
+}
