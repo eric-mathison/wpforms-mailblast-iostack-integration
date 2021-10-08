@@ -34,9 +34,6 @@ module.exports = function (grunt) {
         },
 
         version: {
-            project: {
-                src: ["package.json"],
-            },
             main: {
                 options: {
                     prefix: "\\*\\s+Version:\\s+|.*VERSION',\\s+'",
@@ -46,13 +43,16 @@ module.exports = function (grunt) {
         },
 
         clean: {
-            build: {
-                src: ["build/"],
+            temp: {
+                src: ["temp/"],
+            },
+            release: {
+                src: ["release/"],
             },
         },
 
         copy: {
-            build: {
+            temp: {
                 src: [
                     "**",
                     "!node_modules/**",
@@ -60,19 +60,19 @@ module.exports = function (grunt) {
                     "!package.json",
                     "!package-lock.json",
                 ],
-                dest: "build/",
+                dest: "temp/",
             },
         },
 
         compress: {
-            build: {
+            release: {
                 options: {
-                    archive: "build/<%= pkg.name %>.zip",
+                    archive: "release/<%= pkg.name %>.zip",
                 },
                 files: [
                     {
                         expand: true,
-                        cwd: "build/",
+                        cwd: "temp/",
                         src: ["**/*"],
                         dest: "<%= pkg.name %>/",
                     },
@@ -83,8 +83,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask("build", ["addtextdomain", "makepot"]);
     grunt.registerTask("release", [
-        "clean:build",
-        "copy:build",
-        "compress:build",
+        "clean:temp",
+        "clean:release",
+        "copy:temp",
+        "compress:release",
+        "clean:temp",
     ]);
 };

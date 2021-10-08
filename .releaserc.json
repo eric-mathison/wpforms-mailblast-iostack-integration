@@ -1,0 +1,45 @@
+{
+    "branches": "master",
+    "repositoryUrl": "https://github.com/eric-mathison/wpforms-bigmailer-integration",
+    "debug": "true",
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        [
+            "@semantic-release/github",
+            {
+                "assets": [
+                    {
+                        "path": "release/wpforms-bigmailer-integration.zip",
+                        "label": "ZIP distribution"
+                    }
+                ]
+            }
+        ],
+        [
+            "@semantic-release/changelog",
+            {
+                "changelogFile": "CHANGELOG.md"
+            }
+        ],
+        [
+            "semantic-release-plugin-update-version-in-files",
+            {
+                "files": ["wpforms-bigmailer-integration.php"],
+                "placeholder": "1.0.0"
+            }
+        ],
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "package.json",
+                    "package-lock.json",
+                    "CHANGELOG.md",
+                    "wpforms-bigmailer-integration.php"
+                ],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+            }
+        ]
+    ]
+}
