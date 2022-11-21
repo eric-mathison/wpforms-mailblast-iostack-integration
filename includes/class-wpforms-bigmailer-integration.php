@@ -76,6 +76,17 @@ class WPForms_BigMailer_Integration {
         wpforms_panel_field(
             'text',
             'settings',
+            'em_bigmailer_transaction_campaign_id',
+            $instance->form_data,
+            __( 'BigMailer Transaction Campaign ID' , 'wpforms-bigmailer-integration' ),
+            [
+                'tooltip' => esc_html__( 'Optional. Enter the ID for the transaction campaign the subscriber will be sent.', 'wpforms-bigmailer-integration' ),
+            ]
+        );
+
+        wpforms_panel_field(
+            'text',
+            'settings',
             'em_bigmailer_message_type_id',
             $instance->form_data,
             __( 'Bigmailer Message Type ID' , 'wpforms-bigmailer-integration' ),
@@ -131,6 +142,10 @@ class WPForms_BigMailer_Integration {
             $list_id_array = preg_split('/[\s,]+/', $list_id);
         }
 
+        // Get the transaction campaign ID
+        if (!empty($form_data['settings']['em_bigmailer_transaction_campaign_id']))
+            $transaction_id = esc_html($form_data['settings']['em_bigmailer_transaction_campaign_id']);
+
         // Get the unsubscribe IDs and create array of ids
         if (!empty($form_data['settings']['em_bigmailer_message_type_id'])) {
             $unsubscribe_id = esc_html($form_data['settings']['em_bigmailer_message_type_id']);
@@ -150,12 +165,15 @@ class WPForms_BigMailer_Integration {
 
         $create_body = array(
             'email' => $fields[$email_field_id]['value'],
-            'list_ids' => $list_id_array,
             'field_values' => [array(
                 'name' => 'name',
                 'string' => $fields[$name_field_id]['value'],
             )]
         );
+
+        if (!empty($list_id_array)) {
+            $create_body['list_ids'] = $list_id_array;
+        }
 
         // Send data to bigmailer
         // https://api.bigmailer.io/v1/brands/{brand_id}/contacts
@@ -181,9 +199,12 @@ class WPForms_BigMailer_Integration {
                 
                 $update_body = array(
                     'email' => $fields[$email_field_id]['value'],
-                    'list_ids' => $list_id_array,
                     'unsubscribe_all' => false,
                 );
+
+                if (!empty($list_id_array)) {
+                    $update_body['list_ids'] = $list_id_array;
+                }
 
                 if (!empty($unsubscribe_id_array)) {
                     $update_body['unsubscribe_ids'] = $unsubscribe_id_array;
@@ -197,6 +218,25 @@ class WPForms_BigMailer_Integration {
                     'body' => wp_json_encode( $update_body )
                 ));
             }
+        }
+
+        // If sending a transaction campaign, send it normalizer_get_raw_decomposition
+        if (!empty($transaction_id)) {
+            // only grab first id if is array
+            $id = preg_split('/[\s,]+/', $transaction_id)[0];
+
+            $transaction_body = array(
+                'email' => $fields[$email_field_id]['value'],
+            );
+
+            $transaction_response = wp_remote_post( 'https://api.bigmailer.io/v1/brands/' . $brand_id . '/transactional-campaigns/' . $id . '/send', array(
+                'headers' => array(
+                    'X-API-Key' => $api_key,
+                    'Content-Type' => 'application/json',
+                ),
+                'body' => wp_json_encode( $transaction_body ),
+            ));
+            
         }
 
         // Enable Response Logs if debug mode is enabled
@@ -215,6 +255,18 @@ class WPForms_BigMailer_Integration {
                 wpforms_log(
                     'Bigmailer Update Subscriber Response',
                     $update_response,
+                    [
+                        'type' => ['provider'],
+                        'parent' => $entry_id,
+                        'form_id' => $form_data['id'],
+                    ]
+                );
+            }
+
+            if (!empty($transaction_response)) {
+                wpforms_log(
+                    'Bigmailer Transaction Response',
+                    $transaction_response,
                     [
                         'type' => ['provider'],
                         'parent' => $entry_id,
