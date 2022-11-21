@@ -3,7 +3,7 @@
  * Plugin Name: WPForms BigMailer Integration
  * Plugin URI: https://#
  * Description: Enables you to easily send WPForms subscribers to your BigMailer account.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Eric Mathison
  * Author URI: https://#
  * Text Domain: wpforms-bigmailer-integration
@@ -12,7 +12,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * 
  * @package WPForms_BigMailer_Integration
- * @since 1.0.0
+ * @since 1.1.0
  * @copyright Copyright (c) 2021, Eric Mathison
  * @license GPL-2.0+
  */
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'WPFORMS_BIGMAILER_INTEGRATION_VERSION', '1.0.0' );
+define( 'WPFORMS_BIGMAILER_INTEGRATION_VERSION', '1.1.0' );
 
 /**
  * Load plugin files.
