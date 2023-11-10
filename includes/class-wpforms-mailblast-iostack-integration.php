@@ -275,4 +275,4 @@ class WPForms_Mailblast_IOStack_Integration {
     }
 
 }
-new WPForms_BigMailer_Integration();
+new WPForms_Mailblast_IOStack_Integration();
