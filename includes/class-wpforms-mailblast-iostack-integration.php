@@ -171,6 +171,7 @@ class WPForms_Mailblast_IOStack_Integration {
         if (!is_numeric($name_field_id) || empty($fields[$name_field_id]['value'])) {
             return;
         }
+
         // Get email field id
         $email_field_id = esc_html($form_data['settings']['em_mailblast_field_email']);
         if (!is_numeric($email_field_id) || empty($fields[$email_field_id]['value'])) {
@@ -180,7 +181,7 @@ class WPForms_Mailblast_IOStack_Integration {
         $create_body = array('data' => array('attributes' => array (
             'email' => $fields[$email_field_id]['value'],
             'first_name' => $fields[$name_field_id]['value'],
-        );
+        )));
 
         // Send data to mailblast
         // https://api.mailblast.io/v1/lists/[LIST_ID]/subscribers
