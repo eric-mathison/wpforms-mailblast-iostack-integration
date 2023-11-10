@@ -194,59 +194,31 @@ class WPForms_Mailblast_IOStack_Integration {
             'body' => wp_json_encode( $create_body ),
         ));
 
-        // Check if contact already exists
-        // Response will be something other than 201
-        if ($create_response['response']['code'] != 201) {
+        // Check if contact is created or already exists
+        // Response will be 201 or 422
+        if ($create_response['response']['code'] == 201 || $create_response['response']['code'] == 422) {
             $response_message = json_decode($create_response['body']);
-
-            // if ($response_message->code == 'resource_already_exists') {
-            //     // If contact already exists, update it
-            //     $update_args = array (
-            //         'list_ids_op' => 'add',
-            //         'unsubscribe_ids_op' => 'remove',
-            //     );
-                
-            //     $update_body = array(
-            //         'email' => $fields[$email_field_id]['value'],
-            //         'unsubscribe_all' => false,
-            //     );
-
-            //     if (!empty($list_id_array)) {
-            //         $update_body['list_ids'] = $list_id_array;
-            //     }
-
-            //     if (!empty($unsubscribe_id_array)) {
-            //         $update_body['unsubscribe_ids'] = $unsubscribe_id_array;
-            //     }
-
-            //     $update_response = wp_remote_post( add_query_arg($update_args, 'https://api.bigmailer.io/v1/brands/' . $brand_id . '/contacts/' . $fields[$email_field_id]['value']), array(
-            //         'headers' => array(
-            //             'X-API-Key' => $api_key,
-            //             'Content-Type' => 'application/json',
-            //         ),
-            //         'body' => wp_json_encode( $update_body )
-            //     ));
-            // }
-        }
-
-        // If sending a transaction campaign, send it normalizer_get_raw_decomposition
-        // if (!empty($transaction_id)) {
-        //     // only grab first id if is array
-        //     $id = preg_split('/[\s,]+/', $transaction_id)[0];
-
-        //     $transaction_body = array(
-        //         'email' => $fields[$email_field_id]['value'],
-        //     );
-
-        //     $transaction_response = wp_remote_post( 'https://api.bigmailer.io/v1/brands/' . $brand_id . '/transactional-campaigns/' . $id . '/send', array(
-        //         'headers' => array(
-        //             'X-API-Key' => $api_key,
-        //             'Content-Type' => 'application/json',
-        //         ),
-        //         'body' => wp_json_encode( $transaction_body ),
-        //     ));
             
-        // }
+            if ($create_response['response']['code'] == 422 && $response_message->errors[0]->detail != 'address is already subscribed to this list.') {
+                return;
+            }
+
+            $printable_body = array(
+                'email' => $fields[$email_field_id]['value'],
+                'title' => $printable_title,
+                'link' => $printable_url,
+            );
+
+            // if contact is created or already exists, send printable
+            $printable_response = wp_remote_post( 'api.iostack.net/fromabcstoacts/freeprintable', array(
+                'headers' => array(
+                    'X-API-Key' => $iostack_api_key,
+                    'Content-Type' => 'application/json',
+                ),
+                'body' => wp_json_encode( $printable_body ),
+            ));
+            
+        }
 
         // Enable Response Logs if debug mode is enabled
         if (function_exists('wpforms_log')) {
@@ -260,17 +232,15 @@ class WPForms_Mailblast_IOStack_Integration {
                 ]
             );
 
-            // if (!empty($transaction_response)) {
-            //     wpforms_log(
-            //         'Bigmailer Transaction Response',
-            //         $transaction_response,
-            //         [
-            //             'type' => ['provider'],
-            //             'parent' => $entry_id,
-            //             'form_id' => $form_data['id'],
-            //         ]
-            //     );
-            // }
+            wpforms_log(
+                'IOStack Transaction Response',
+                $printable_response,
+                [
+                    'type' => ['provider'],
+                    'parent' => $entry_id,
+                    'form_id' => $form_data['id'],
+                ]
+            );
         }
     }
 
