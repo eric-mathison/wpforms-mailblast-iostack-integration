@@ -204,7 +204,7 @@ class WPForms_Mailblast_IOStack_Integration {
             }
 
             $printable_body = array(
-                'email' => $fields[$email_field_id]['value'],
+                'to' => $fields[$email_field_id]['value'],
                 'title' => $printable_title,
                 'link' => $printable_url,
             );
