@@ -210,7 +210,7 @@ class WPForms_Mailblast_IOStack_Integration {
             );
 
             // if contact is created or already exists, send printable
-            $printable_response = wp_remote_post( 'api.iostack.net/fromabcstoacts/freeprintable', array(
+            $printable_response = wp_remote_post( 'https://api.iostack.net/fromabcstoacts/freeprintable', array(
                 'headers' => array(
                     'X-API-Key' => $iostack_api_key,
                     'Content-Type' => 'application/json',
