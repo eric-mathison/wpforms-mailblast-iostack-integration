@@ -3,7 +3,7 @@
  * Plugin Name: WPForms Mailblast IOStack Integration
  * Plugin URI: https://#
  * Description: Add users to a Mailblast list and send transactional emails from the IOStack API.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Eric Mathison
  * Author URI: https://#
  * Text Domain: wpforms-mailblast-iostack-integration
@@ -12,7 +12,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * 
  * @package WPForms_Mailblast_IOStack_Integration
- * @since 1.0.0
+ * @since 1.1.0
  * @copyright Copyright (c) 2023, Eric Mathison
  * @license GPL-2.0+
  */
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'WPFORMS_MAILBLAST_IOSTACK_INTEGRATION_VERSION', '1.0.0' );
+define( 'WPFORMS_MAILBLAST_IOSTACK_INTEGRATION_VERSION', '1.1.0' );
 
 /**
  * Load plugin files.

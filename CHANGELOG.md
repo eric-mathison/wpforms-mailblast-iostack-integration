@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/eric-mathison/wpforms-mailblast-iostack-integration/compare/v1.0.0...v1.1.0) (2023-11-12)
+
+
+### Features
+
+* add conditions for when fields are emtpy ([e7d4c63](https://github.com/eric-mathison/wpforms-mailblast-iostack-integration/commit/e7d4c63cd88a3cf60dfc7215a4223cfe6f2b2c7d))
+
 # 1.0.0 (2023-11-10)
 
 
