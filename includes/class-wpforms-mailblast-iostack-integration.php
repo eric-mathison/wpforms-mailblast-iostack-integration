@@ -178,6 +178,11 @@ class WPForms_Mailblast_IOStack_Integration {
             return;
         }
 
+        // Return if mailblast fields are empty
+        if(empty($mailblast_email) || empty($mailblast_api_key) || empty($list_id)) {
+            return;
+        }
+
         $create_body = array('data' => array('attributes' => array (
             'email' => $fields[$email_field_id]['value'],
             'first_name' => $fields[$name_field_id]['value'],
@@ -200,6 +205,11 @@ class WPForms_Mailblast_IOStack_Integration {
             $response_message = json_decode($create_response['body']);
             
             if ($create_response['response']['code'] == 422 && $response_message->errors[0]->detail != 'address is already subscribed to this list.') {
+                return;
+            }
+
+            // Return early if IOStack fields are empty
+            if (empty($printable_title) || empty($printable_url)) {
                 return;
             }
 
