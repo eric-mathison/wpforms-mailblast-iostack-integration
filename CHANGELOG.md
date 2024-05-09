@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/eric-mathison/wpforms-mailblast-iostack-integration/compare/v1.1.0...v1.2.0) (2024-05-09)
+
+
+### Features
+
+* force email input value to be lowercase ([ea904df](https://github.com/eric-mathison/wpforms-mailblast-iostack-integration/commit/ea904dfbb08d4dfe4892c1949519448d7bd892fc))
+
 # [1.1.0](https://github.com/eric-mathison/wpforms-mailblast-iostack-integration/compare/v1.0.0...v1.1.0) (2023-11-12)
 
 
