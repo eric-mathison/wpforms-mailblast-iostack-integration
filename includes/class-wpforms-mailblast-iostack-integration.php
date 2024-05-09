@@ -183,8 +183,11 @@ class WPForms_Mailblast_IOStack_Integration {
             return;
         }
 
+        // Santize email value
+        $email_value = strtolower($fields[$email_field_id]['value']);
+
         $create_body = array('data' => array('attributes' => array (
-            'email' => $fields[$email_field_id]['value'],
+            'email' => $email_value,
             'first_name' => $fields[$name_field_id]['value'],
         )));
 
@@ -214,7 +217,7 @@ class WPForms_Mailblast_IOStack_Integration {
             }
 
             $printable_body = array(
-                'to' => $fields[$email_field_id]['value'],
+                'to' => $email_value,
                 'title' => $printable_title,
                 'link' => $printable_url,
             );
